@@ -1,0 +1,82 @@
+{
+  "format": 1,
+  "review_status": "reviewed-for-public-release",
+  "notice": "Reviewed standalone source release. Product repository history and owner data are excluded.",
+  "files": [
+    {
+      "path": ".github/CODEOWNERS",
+      "sha256": "1548d76107b937685105fa6b6c0d4b6da68635fed56df0f99bb77ac45baa6de2",
+      "bytes": 59
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "b8a4a68874c6d4f554b946d0fdf4db1bec94886e6ddcb33af8b7e8798d77c6b4",
+      "bytes": 455
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "f8d6fc5b1fc7ae047e42c6920bfdb6e3773adda4177c12e927be06e9f4d01d5a",
+      "bytes": 36
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "b7258cfbe5dd89bfb5b1c13ea9d11519d4a350e7f38d6a96084c0b7dca5ba80c",
+      "bytes": 796
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "5a9b7a9075f899c1571d899235c4200990838cc4ecea56a5ddf063e9323b6a27",
+      "bytes": 1077
+    },
+    {
+      "path": "README.md",
+      "sha256": "155d50936c1bec262257a8e21cc3bf7dc53aaec3171703f153d2619af85363a6",
+      "bytes": 1654
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "0e71f2ddb0f0e89814324da85e8cf9232501be732c4fc0af21e59d515c202da2",
+      "bytes": 659
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "9a405505baaa17356585fbb61bb0930fd366520bb1199e0a60958918e5fd483a",
+      "bytes": 916
+    },
+    {
+      "path": "docs/HARDWARE.md",
+      "sha256": "59cd699518935115fd946192b5ac65b555fca4ae5ed6cc8bba40e5de648565dc",
+      "bytes": 1293
+    },
+    {
+      "path": "docs/PROTOCOL.md",
+      "sha256": "e9ac9d399c23bc03167cff51aaffdc35c27eda6cd9dc0d99d99ade76399b157d",
+      "bytes": 1611
+    },
+    {
+      "path": "protocol.py",
+      "sha256": "f669295105939291261f91888f05a45547a50bd3e5e75595fb7c1e2a63193eb2",
+      "bytes": 1904
+    },
+    {
+      "path": "receiver.py",
+      "sha256": "8f64d8e3ed811f4f97096d49bc19e96f4acacee3ebb71d482f41b25db57bc511",
+      "bytes": 2003
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "16524c755d16f56c5454ab8e75bda3bfa0261ecf42fc39d53f35c0f7e6ef58c0",
+      "bytes": 17
+    },
+    {
+      "path": "sender.py",
+      "sha256": "889c49f5e746fef821c4b4cb3c6e35498adf28b3ad3dfdc46af92af32efa8a7f",
+      "bytes": 1581
+    },
+    {
+      "path": "tests/test_lab.py",
+      "sha256": "acebe4676ea5dc7159a04111815d895d86ab92baefaff097a4e4239f032eda56",
+      "bytes": 3282
+    }
+  ]
+}
