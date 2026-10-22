@@ -1,34 +1,36 @@
 # Phantom Audio Lab
 
-**Build and test an audio stream before your microphone arrives.**
+**Test an audio stream before you buy or connect a microphone.**
 
-Send a known test tone over a local WebSocket. See which audio frames arrive, count missing frames, and check what happens when a connection starts over.
+Send a known tone over a local WebSocket and see what arrives. Find missing frames, spot duplicates, and check a fresh connection without recording anyone.
 
-For developers building microphone devices, DIY audio projects, or local audio services. Runs on your computer with Python and one dependency. No hardware, account, API key, or cloud service needed.
+For developers building microphone devices, DIY audio tools, or audio services. Python, one dependency, no hardware or account.
 
 [![Audio lab checks](https://github.com/rodneyg/phantom-audio-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/rodneyg/phantom-audio-lab/actions/workflows/ci.yml)
 
-## Why use it?
+## What it helps you build
 
-| What you want to do | What the lab gives you |
+| Your project | Start here |
 | --- | --- |
-| Start before the hardware is ready | A working sender and receiver you can run on one computer. |
-| Understand gaps in an audio stream | Counts of missing frames and ignored duplicate or stale frames. |
-| Reproduce a bug without sharing conversations | The same generated tone on every run, with no microphone recordings. |
-| Build your own audio connection | Small, MIT-licensed Python files to read, reuse, and adapt. |
-
-The test tone gives you a known signal while you work on delivery. Hardware capture, transcription, and other processing can come later in your own project.
+| A Wi-Fi microphone | Learn a small audio packet format and how to track missing frames before writing device code. |
+| An audio receiver | Test delivery with the same known signal on every run. |
+| A bug report or regression test | Reproduce the connection problem with generated audio instead of private conversations. |
+| Your own audio tool | Reuse the MIT-licensed sender, receiver, and packet checks. Add your own capture or processing later. |
 
 ```mermaid
 flowchart LR
-    Tone[Known test tone] --> Sender[Send audio frames]
-    Sender -->|Local WebSocket| Receiver[Check delivery]
-    Receiver --> Report[See gaps, duplicates, and signal level]
+    Tone[Generated test tone] --> Sender[Send numbered audio frames]
+    Sender -->|Local WebSocket| Receiver[Check each frame]
+    Receiver --> Report[Count arrivals, gaps, and ignored frames]
 ```
 
-## Try the three-second demo
+The lab checks delivery. It does not tell you whether a real microphone, radio, speech model, or sound classifier works.
 
-Use Python 3.11 or later. These commands are for macOS or Linux:
+## Run the three-second demo
+
+Python 3.11 or later. Commands below are for macOS or Linux.
+
+**Terminal 1:** install and start the receiver.
 
 ```sh
 git clone https://github.com/rodneyg/phantom-audio-lab.git
@@ -38,44 +40,53 @@ python3 -m venv .venv
 .venv/bin/python receiver.py
 ```
 
-From the same folder in another terminal:
+**Terminal 2:** open the same folder and send a tone.
 
 ```sh
 .venv/bin/python sender.py --seconds 3
 ```
 
-The sender prints:
-
-```text
-Sent 94 generated tone frames.
-```
-
-The receiver reports:
+The sender prints `Sent 94 generated tone frames.` The receiver prints:
 
 ```json
 {"packets": 94, "missing": 0, "ignored": 0, "peak_rms": 0.064913}
 ```
 
-All 94 frames arrived. None were missing or ignored. The nonzero signal level confirms the frames contained audio samples.
+| Field | Meaning |
+| --- | --- |
+| `packets` | Frames accepted. Expect 94 for this demo. |
+| `missing` | Frames skipped between accepted sequence numbers. Expect 0. |
+| `ignored` | Duplicate or old frames ignored. Expect 0. |
+| `peak_rms` | Highest measured audio level. A nonzero value confirms samples contain a signal. |
 
-Run the sender again to check a fresh connection. Stop the receiver with Ctrl+C. Both commands accept `--port`; `receiver.py --seconds 10` stops automatically.
+Run the sender again to test another connection. Stop the receiver with Ctrl+C. Both tools accept `--port`; `receiver.py --seconds 10` stops itself after ten seconds.
 
-## Catch regressions in your changes
+## Small enough to follow
+
+| File | What it does |
+| --- | --- |
+| [sender.py](sender.py) | Creates a 440 Hz tone and sends numbered frames at 32 ms intervals. |
+| [receiver.py](receiver.py) | Validates incoming frames and prints a delivery report. |
+| [protocol.py](protocol.py) | Defines 16 kHz mono PCM packets and sequence tracking. |
+| [tests/test_lab.py](tests/test_lab.py) | Checks gaps, duplicates, old frames, fresh connections, invalid packets, and wraparound. |
+| [Hardware notes](docs/HARDWARE.md) | Lists references and pins for the exact ReSpeaker Lite kit. No flashing is included. |
+
+[Packet format](docs/PROTOCOL.md) · [Security](SECURITY.md).
+
+## Check your changes
 
 ```sh
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The tests use real local WebSockets and generated audio. They cover fresh connections, missing frames, duplicate and stale frames, invalid packets, and sequence-number wraparound. Adapt them as you change the sender, receiver, or packet format.
+The tests use generated audio and real local WebSockets. They do not use a microphone, cloud account, model, API key, or product checkout.
 
-## Where to start
+Useful contributions: a small reproducible failure case, cross-platform fixes, clearer examples, and hardware notes checked against official sources. [Open an issue](https://github.com/rodneyg/phantom-audio-lab/issues) or [send a pull request](CONTRIBUTING.md). Keep examples and reports free of private audio and credentials.
 
-- **Building a microphone device:** use [the packet format](docs/PROTOCOL.md) as a starting point for your own device and host code.
-- **Learning audio streaming:** follow `sender.py` and `receiver.py` from tone generation to the delivery report.
-- **Contributing a fix:** add a failure case, improve cross-platform behavior, or check [hardware notes](docs/HARDWARE.md) against official sources.
+## Scope and license
 
-[Open an issue](https://github.com/rodneyg/phantom-audio-lab/issues) or [send a pull request](CONTRIBUTING.md). Use generated audio in examples and bug reports.
+This is the standalone community audio lab associated with Phantom. It is not the consumer product, a product client, or a way to access anyone's recordings. The product's dashboard, accounts, cloud service, recording history, and private source are separate. Contributions are reviewed; nothing syncs into the product automatically.
 
-[Protocol](docs/PROTOCOL.md) · [ReSpeaker Lite hardware notes](docs/HARDWARE.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+The receiver listens only on `127.0.0.1:8799`. Transport is unencrypted. Audio is generated, checked, then discarded; it is not captured from a microphone, saved, or played. Read [Security](SECURITY.md) before adapting the code for networked use.
 
-**Scope:** this is a local audio transport reference. It generates tones and reports delivery; it does not capture a microphone, save or play audio, or connect to the Phantom product. Transport is unencrypted and restricted to loopback. See [Security](SECURITY.md) before adapting it for other uses.
+[MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md) · [Contributing](CONTRIBUTING.md).
