@@ -1,0 +1,10 @@
+{
+  "flow": "framing-round-trip",
+  "ok": true,
+  "result": {
+    "bytes": 1028,
+    "packet_bytes": 1028,
+    "round_trip_equal": true,
+    "seq": 7
+  }
+}

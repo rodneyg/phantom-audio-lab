@@ -1,0 +1,26 @@
+{
+  "flow": "sequence-gap",
+  "ok": true,
+  "result": {
+    "accepted_missing": [
+      0,
+      0,
+      0,
+      1,
+      null,
+      null,
+      0
+    ],
+    "ignored": 2,
+    "inputs": [
+      4294967294,
+      4294967295,
+      0,
+      2,
+      2,
+      1,
+      3
+    ],
+    "missing": 1
+  }
+}

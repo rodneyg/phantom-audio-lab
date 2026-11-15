@@ -1,0 +1,21 @@
+{
+  "flow": "reconnect",
+  "ok": true,
+  "result": {
+    "connections": 2,
+    "deliveries": [
+      {
+        "ignored": 0,
+        "missing": 0,
+        "packets": 2,
+        "peak_rms": 0.064695
+      },
+      {
+        "ignored": 0,
+        "missing": 0,
+        "packets": 2,
+        "peak_rms": 0.064695
+      }
+    ]
+  }
+}

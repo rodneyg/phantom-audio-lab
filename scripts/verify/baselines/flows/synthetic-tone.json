@@ -1,0 +1,11 @@
+{
+  "flow": "synthetic-tone",
+  "ok": true,
+  "result": {
+    "frames": 4,
+    "pcm_sha256": "316a1de921ce7195858b65057d8c86495f011a1b40b1f4cf25b79ab0cce7edbb",
+    "peak": 3000,
+    "peak_rms": 0.064758,
+    "samples": 2048
+  }
+}
