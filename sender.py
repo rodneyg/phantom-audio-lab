@@ -61,4 +61,7 @@ if __name__ == '__main__':
     except ConnectionClosed:
         parser.exit(1, f'The connection to the lab receiver on port {args.port} closed during the tone. '
                     'Check that the receiver is running and try again.\n')
+    except ConnectionRefusedError:
+        parser.exit(1, f'No lab receiver is listening on 127.0.0.1:{args.port}. '
+                    f'Start receiver.py with --port {args.port} and try again.\n')
     print(f'Sent {count} generated tone frames.')

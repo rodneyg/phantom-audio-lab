@@ -1,6 +1,8 @@
 import asyncio
 import argparse
 import json
+import socket
+import subprocess
 import sys
 import unittest
 from functools import partial
@@ -53,6 +55,37 @@ class ProtocolTests(unittest.TestCase):
         for value in ['0', '-1', '65536']:
             with self.assertRaises(argparse.ArgumentTypeError):
                 port_number(value)
+
+
+class CommandLineTests(unittest.TestCase):
+    def test_sender_reports_missing_receiver(self):
+        with socket.socket() as candidate:
+            candidate.bind(('127.0.0.1', 0))
+            port = candidate.getsockname()[1]
+        self.assert_cli_error(
+            'sender.py', port,
+            f'No lab receiver is listening on 127.0.0.1:{port}. '
+            f'Start receiver.py with --port {port} and try again.\n',
+        )
+
+    def test_receiver_reports_occupied_port(self):
+        with socket.create_server(('127.0.0.1', 0)) as listener:
+            port = listener.getsockname()[1]
+            self.assert_cli_error(
+                'receiver.py', port,
+                f'Port {port} is already in use on 127.0.0.1. '
+                'Choose a free port with --port.\n',
+            )
+
+    def assert_cli_error(self, script, port, message):
+        command = Path(__file__).resolve().parents[1] / script
+        result = subprocess.run(
+            [sys.executable, str(command), '--port', str(port)],
+            capture_output=True, text=True, timeout=15, check=False,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout, '')
+        self.assertEqual(result.stderr, message)
 
 
 class TransportTests(unittest.IsolatedAsyncioTestCase):
