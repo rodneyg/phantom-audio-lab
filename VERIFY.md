@@ -1,6 +1,14 @@
 # Deterministic verification
 
-Run from the repository root. The tool is offline and writes generated state only to the gitignored `.verify/work/` directory.
+Run from the repository root with Python 3.11 or later. If you already created `.venv` and installed the dependencies for the README demo, start at the activation command:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+. .venv/bin/activate
+```
+
+The verification tool runs offline after setup and writes generated state only to the gitignored `.verify/work/` directory.
 
 ```sh
 ./verify seed
