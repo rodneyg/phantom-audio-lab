@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from protocol import MASK, PACKET_BYTES, Sequence, hello, packet, parse_packet
+from protocol import MASK, PACKET_BYTES, SAMPLES, Sequence, hello, packet, parse_packet
 from receiver import receive
 from sender import tone
 from websockets.asyncio.client import connect
@@ -40,8 +40,16 @@ def seed(quiet=False):
     return result
 
 def ensure_seeded():
-    if not (WORK / "tone.pcm").is_file() or not (WORK / "state.json").is_file():
-        seed(quiet=True)
+    values = config()
+    expected_pcm_bytes = values["frames"] * SAMPLES * 2
+    try:
+        state = (WORK / "state.json").read_text(encoding="utf-8")
+        pcm_bytes = (WORK / "tone.pcm").stat().st_size
+        if state == stable_json(values) and pcm_bytes == expected_pcm_bytes:
+            return
+    except (FileNotFoundError, UnicodeDecodeError):
+        pass
+    seed(quiet=True)
 
 def framing_round_trip():
     pcm = tone(0)
