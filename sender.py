@@ -18,9 +18,20 @@ def port_number(value):
 
 def duration(value):
     number = float(value)
-    if not math.isfinite(number) or number <= 0:
-        raise argparse.ArgumentTypeError('Seconds must be positive and finite')
+    try:
+        frame_count(number)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError(str(error)) from error
     return number
+
+
+def frame_count(seconds):
+    if not math.isfinite(seconds) or seconds <= 0:
+        raise ValueError('Seconds must be positive and finite')
+    frames = seconds / FRAME_SECONDS
+    if not math.isfinite(frames):
+        raise ValueError('Seconds is too large to calculate a frame count')
+    return math.ceil(frames)
 
 
 def tone(frame):
@@ -29,10 +40,10 @@ def tone(frame):
 
 
 async def send(port, seconds):
+    count = frame_count(seconds)
     async with connect(f'ws://127.0.0.1:{port}', proxy=None, compression=None) as socket:
         await socket.send(hello())
         started = time.monotonic()
-        count = math.ceil(seconds / FRAME_SECONDS)
         for frame in range(count):
             await socket.send(packet(frame & MASK, tone(frame)))
             await asyncio.sleep(max(0, started + (frame + 1) * FRAME_SECONDS - time.monotonic()))
