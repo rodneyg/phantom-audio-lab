@@ -9,7 +9,7 @@ This lab demonstrates the basic framing used by a room microphone. Its standalon
 {"device":"lab-tone","room":"Test lab","rate":16000,"format":"s16le"}
 ```
 
-Only these four fields are accepted. Device and room are 1–64 characters without control characters. Hello must arrive within five seconds.
+Each of these four fields must appear exactly once. Device and room are 1–64 characters without control characters. Hello must arrive within five seconds.
 
 3. Send binary messages at 32 ms intervals:
 

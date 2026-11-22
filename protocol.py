@@ -13,10 +13,19 @@ def hello():
     return json.dumps(dict(device='lab-tone', room='Test lab', rate=RATE, format='s16le'))
 
 
+def _unique_fields(pairs):
+    fields = {}
+    for name, value in pairs:
+        if name in fields:
+            raise ValueError('Repeated hello field')
+        fields[name] = value
+    return fields
+
+
 def parse_hello(message):
     if not isinstance(message, str) or len(message) > 2048:
         raise ValueError('Expected a small JSON text hello')
-    value = json.loads(message)
+    value = json.loads(message, object_pairs_hook=_unique_fields)
     if not isinstance(value, dict) or set(value) != {'device', 'room', 'rate', 'format'}:
         raise ValueError('Expected device, room, rate, format')
     if any(not isinstance(value[k], str) or not 1 <= len(value[k]) <= 64
