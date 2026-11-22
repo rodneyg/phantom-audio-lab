@@ -94,7 +94,7 @@ def png_chunk(kind, data):
 def render_waveform(path):
     ensure_seeded()
     width, height = 960, 480
-    pixels = bytearray([248, 250, 252] * width * height)
+    pixels = bytearray((248, 250, 252)) * (width * height)
     def dot(x, y, color):
         if 0 <= x < width and 0 <= y < height:
             offset = (y * width + x) * 3
