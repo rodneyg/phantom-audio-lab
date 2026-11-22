@@ -72,6 +72,7 @@ class TransportTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(results[2]['missing'], 1)
         self.assertEqual(results[2]['ignored'], 2)
         self.assertGreater(results[0]['peak_rms'], .05)
+        self.assertEqual(results[1], results[0], 'Reconnecting should deliver the same tone')
         self.assertTrue(results[3]['invalid'])
 
 
