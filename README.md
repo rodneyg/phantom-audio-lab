@@ -59,7 +59,7 @@ The sender prints `Sent 94 generated tone frames.` The receiver prints:
 | `ignored` | Duplicate or old frames ignored. Expect 0. |
 | `peak_rms` | Highest measured audio level. A nonzero value confirms samples contain a signal. |
 
-Run the sender again to test another connection. Stop the receiver with Ctrl+C. Both tools accept `--port`; `receiver.py --seconds 10` stops itself after ten seconds.
+Run the sender again to test another connection. Stop the receiver with Ctrl+C. Both tools accept `--port`. With `receiver.py --seconds 10`, the receiver starts shutting down after ten seconds.
 
 ## Small enough to follow
 
@@ -79,6 +79,8 @@ Run the sender again to test another connection. Stop the receiver with Ctrl+C. 
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
+For fixture, waveform, and baseline commands, see the [verification guide](VERIFY.md).
+
 The tests use generated audio and real local WebSockets. They do not use a microphone, cloud account, model, API key, or product checkout.
 
 Useful contributions: a small reproducible failure case, cross-platform fixes, clearer examples, and hardware notes checked against official sources. [Open an issue](https://github.com/rodneyg/phantom-audio-lab/issues) or [send a pull request](CONTRIBUTING.md). Keep examples and reports free of private audio and credentials.
@@ -87,6 +89,8 @@ Useful contributions: a small reproducible failure case, cross-platform fixes, c
 
 This is the standalone community audio lab associated with Phantom. It is not the consumer product, a product client, or a way to access anyone's recordings. The product's dashboard, accounts, cloud service, recording history, and private source are separate. Contributions are reviewed; nothing syncs into the product automatically.
 
-The receiver listens only on `127.0.0.1:8799`. Transport is unencrypted. Audio is generated, checked, then discarded; it is not captured from a microphone, saved, or played. Read [Security](SECURITY.md) before adapting the code for networked use.
+The receiver listens only on `127.0.0.1`, with port `8799` as the default. Transport is unencrypted. Audio is generated, checked, then discarded; it is not captured from a microphone, saved, or played. Read [Security](SECURITY.md) before adapting the code for networked use.
+
+The [release manifest](https://github.com/rodneyg/phantom-audio-lab/blob/ac4c4dda896c4168dc8b20d1261fa691d8dba3aa/RELEASE_MANIFEST.json) lists the files and checksums for the reviewed source snapshot at that commit. Later changes are in the [commit history](https://github.com/rodneyg/phantom-audio-lab/commits/main/).
 
 [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md) · [Contributing](CONTRIBUTING.md).
