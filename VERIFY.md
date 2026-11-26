@@ -8,7 +8,7 @@ python3 -m venv .venv
 . .venv/bin/activate
 ```
 
-The verification tool runs offline after setup and writes generated state only to the gitignored `.verify/work/` directory.
+After setup, the verifier works without internet access. The reconnect flow uses a loopback socket. Generated fixtures and screenshots go in the gitignored `.verify/work/` directory. The check command also creates and removes a temporary directory for its screenshot comparison.
 
 ```sh
 ./verify seed
@@ -19,7 +19,7 @@ The verification tool runs offline after setup and writes generated state only t
 ./verify check
 ```
 
-`seed` prints stable JSON with the fixed clock, frame count, state path, and tone hash. `run --list` prints all four flows in stable order. A flow prints one JSON object:
+`seed` prints stable JSON with the fixture timestamp, frame count, state path, and tone hash. `run --list` prints all four flows in stable order. A flow prints one JSON object:
 
 ```json
 {
@@ -34,7 +34,7 @@ The verification tool runs offline after setup and writes generated state only t
 }
 ```
 
-`screenshot --list` prints `waveform`. `screenshot waveform` prints stable JSON and generates `.verify/work/shots/waveform.png`. The committed baseline is `scripts/verify/baselines/screenshots/waveform.png`. `check` prints one PASS or FAIL line per rule and ends with:
+`screenshot --list` prints `waveform`. `screenshot waveform` generates `.verify/work/shots/waveform.png`. Its JSON reports the path and SHA-256 of the committed baseline, `scripts/verify/baselines/screenshots/waveform.png`, when that file exists. If the baseline is missing, it reports the generated file. Run `check` to compare the generated screenshot with the baseline. On a passing run, the summary is:
 
 ```text
 check: 5 passed, 0 failed
@@ -47,4 +47,4 @@ VERIFY_UPDATE_BASELINES=1 ./verify run framing-round-trip
 VERIFY_UPDATE_BASELINES=1 ./verify screenshot waveform
 ```
 
-Repeat the flow command for each changed flow. Normal runs never overwrite committed baselines. The fixed fixture, frozen clock, stable JSON ordering, fixed image dimensions, and standard-library PNG encoder make repeated outputs byte-identical. `./verify check` is the CI gate.
+Repeat the flow command for each changed flow. Normal runs never overwrite committed baselines. The fixed fixture, stable JSON ordering, and fixed image dimensions make outputs repeatable in the same environment. `./verify check` is the CI gate.

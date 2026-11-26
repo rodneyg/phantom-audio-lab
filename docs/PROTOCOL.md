@@ -2,16 +2,16 @@
 
 This lab demonstrates the basic framing used by a room microphone. Its standalone receiver accepts only the strict lab format below. It is not a product API or provisioning client.
 
-1. Open `ws://127.0.0.1:8799` without a browser Origin header.
+1. Open `ws://127.0.0.1:8799` without an Origin header. Use the same port as the receiver if you changed its default.
 2. Send this JSON text message:
 
 ```json
 {"device":"lab-tone","room":"Test lab","rate":16000,"format":"s16le"}
 ```
 
-Each of these four fields must appear exactly once. Device and room are 1–64 characters without control characters. Hello must arrive within five seconds.
+Each of these four fields must appear exactly once. Device and room are 1 to 64 characters. Code points below U+0020 are rejected. Hello must arrive within five seconds.
 
-3. Send binary messages at 32 ms intervals:
+3. Send one binary message per 32 ms of audio. The example sender aims to send at that interval. The receiver checks frame size and sequence.
 
 | Bytes | Value |
 | --- | --- |
