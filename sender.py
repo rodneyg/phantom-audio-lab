@@ -6,6 +6,7 @@ import struct
 import time
 
 from websockets.asyncio.client import connect
+from websockets.exceptions import ConnectionClosed
 from protocol import FRAME_SECONDS, MASK, RATE, SAMPLES, hello, packet
 
 
@@ -44,4 +45,9 @@ if __name__ == '__main__':
     parser.add_argument('--port', type=port_number, default=8799)
     parser.add_argument('--seconds', type=duration, default=3)
     args = parser.parse_args()
-    print(f'Sent {asyncio.run(send(args.port, args.seconds))} generated tone frames.')
+    try:
+        count = asyncio.run(send(args.port, args.seconds))
+    except ConnectionClosed:
+        parser.exit(1, f'The connection to the lab receiver on port {args.port} closed during the tone. '
+                    'Check that the receiver is running and try again.\n')
+    print(f'Sent {count} generated tone frames.')
