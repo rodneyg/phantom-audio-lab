@@ -23,6 +23,12 @@ class ProtocolTests(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(ValueError):
                 parse_hello(bad)
 
+    def test_hello_rejects_repeated_fields(self):
+        for field in ('device', 'room', 'rate', 'format'):
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'Repeated hello field'):
+                duplicate = json.dumps({field: parse_hello(hello())[field]})
+                parse_hello(duplicate[:-1] + ',' + hello()[1:])
+
     def test_framing_and_boundaries(self):
         data = packet(MASK, tone(0))
         self.assertEqual(len(data), PACKET_BYTES)
