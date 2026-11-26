@@ -1,6 +1,7 @@
 """Loopback-only transport diagnostic. No audio is stored or played."""
 import argparse
 import asyncio
+import errno
 import json
 import math
 import struct
@@ -54,3 +55,8 @@ if __name__ == '__main__':
         asyncio.run(listen(args.port, args.seconds))
     except KeyboardInterrupt:
         pass
+    except OSError as error:
+        if error.errno != errno.EADDRINUSE:
+            raise
+        parser.exit(1, f'Port {args.port} is already in use on 127.0.0.1. '
+                    'Choose a free port with --port.\n')
