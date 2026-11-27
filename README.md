@@ -8,6 +8,12 @@ For developers building microphone devices, DIY audio tools, or audio services. 
 
 [![Audio lab checks](https://github.com/rodneyg/phantom-audio-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/rodneyg/phantom-audio-lab/actions/workflows/ci.yml)
 
+## See it work
+
+![Terminal output from a real three-second local demo: 94 generated frames, 94 packets received, no missing or ignored frames, and peak RMS 0.064913.](docs/screenshots/demo-output.png)
+
+![Waveform rendered from the lab's deterministic generated audio fixture. The plot shows four frames, two packets, no missing or ignored frames.](docs/screenshots/waveform.png)
+
 ## What it helps you build
 
 | Your project | Start here |
